@@ -1,10 +1,8 @@
-//cypress - spec file
-
-/// <reference types= "Cypress"/>   // to get auto suggestions of methods
+// <reference types= "Cypress"/>   // to get auto suggestions of methods
 
 describe('My first test suite', function()
 {
-    it('My FirstTest Case', function(){
+    it('My SecondTest Case', function(){
 
 //test step
     cy.visit('https://rahulshettyacademy.com/seleniumPractise/#/');
@@ -18,7 +16,7 @@ describe('My first test suite', function()
     //parent child chaining
     cy.get('.products').find('.product').should('have.length',4);
 
-    cy.get('@productLocator').find('.product').eq(2).contains('ADD TO CART').click();  //alias locator is used here
+    cy.get('@productLocator').find('.product').eq(1).contains('ADD TO CART').click();  //alias locator is used here
 
     cy.get('.products').find('.product').each(($e1, index, $list) => {
         const textVeg = $e1.find('h4.product-name').text()
@@ -31,22 +29,22 @@ describe('My first test suite', function()
     
     })
 
-    //assert if logo text is displayed correctly
-    cy.get('.brand').should('have.text','GREENKART')
-
-    cy.get('.brand').then(function(logoelement){
-
-        cy.log(logoelement.text())
+    cy.get('.cart-icon > img').click()
+    cy.contains('PROCEED TO CHECKOUT').click()
+    cy.contains('Place Order').click()
 
 
-    })
+    // //assert if logo text is displayed correctly
+    // cy.get('.brand').should('have.text','GREENKART')
+
+    // cy.get('.brand').then(function(logoelement){
+
+    //     cy.log(logoelement.text())
+
+
+    // })
 
 })
 
-//     it('My SecondTest Case', function(){
 
-// //test step
-
-
-//     })
 })
