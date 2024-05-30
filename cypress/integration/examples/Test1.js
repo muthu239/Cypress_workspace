@@ -37,7 +37,7 @@ describe('My first test suite', function()
     cy.get('.brand').then(function(logoelement){
 
         cy.log(logoelement.text())
-
+        
 
     })
 

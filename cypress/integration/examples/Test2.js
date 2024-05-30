@@ -1,4 +1,4 @@
-// <reference types= "Cypress"/>   // to get auto suggestions of methods
+/// <reference types= "Cypress"/>   // to get auto suggestions of methods
 
 describe('My first test suite', function()
 {
