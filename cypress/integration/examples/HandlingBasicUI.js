@@ -37,5 +37,30 @@ describe('Basic UI Functionality automation using cypress', function()
         cy.get('#show-textbox').click()
         cy.get('#displayed-text').should('be.visible')
 
+//Handling pop up alerts
+        cy.get('#alertbtn').click()
+        cy.get('[value ="Confirm"]').click()
+
+        //to get the text from pop up
+        cy.on('window:alert',(str)=> {
+
+            //
+            expect(str).to.equal('Hello , share this practice page and share your knowledge')
+
+        })
+
+        // to get text from confirm - cancel pop up
+        cy.on('window:confirm',(str)=> {
+
+            //
+            expect(str).to.equal('Hello , Are you sure you want to confirm?')
+
+        })
+
+        // to click cancel on the pop up
+        cy.on('window:confirm',()=> false)
+
+
+    
     })
 })
