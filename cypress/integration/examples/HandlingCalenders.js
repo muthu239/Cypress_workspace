@@ -2,9 +2,10 @@ describe('UI Manipulations', function()
 {
     it('Handle Calendar dates', function(){
 
-        const dateNo = '26'
+        const dateNo = "9"
         const monthNo = "5"
         const year = "2027"
+        const expectedList = [monthNo,dateNo,year]
 
         cy.visit('https://rahulshettyacademy.com/seleniumPractise/#/offers');
         cy.get('.react-date-picker__inputGroup').click()
@@ -13,50 +14,40 @@ describe('UI Manipulations', function()
         cy.contains('button',year).click()
         cy.get('.react-calendar__tile.react-calendar__year-view__months__month').eq(Number(monthNo)-1).click()
 
-        var monthAndYearText = "a"
+
+     
 
         cy.contains(year).then(($value) =>{
-            monthAndYearText = $value.text()
+            var monthAndYearText = $value.text()
             cy.log(monthAndYearText)
 
-            var startInd = ''
-                var endInd = ''
+        
+           // cy.get('.react-calendar__tile.react-calendar__month-view__days__day abbr[aria-label="'+dateNo+" "+monthAndYearText+'"]').click()
+
+            
                 var i = 0
             cy.get('.react-calendar__tile.react-calendar__month-view__days__day').find('abbr[aria-label]').each(($e1, index, $list) => {
            
-                const dateText = $e1.text()
-    
-                // cy.log(dateText)
+                const dateText = Number($e1.text())
 
+                if(Number(dateText) === Number(dateNo)){
                 
-
-                if(dateText === '1'){
-                    startInd = index
-                    i = i+1
+                    cy.get('.react-calendar__tile.react-calendar__month-view__days__day').eq(Number(index)).click()
                 }
-
-                if(i = 2){
-                    endInd = index-1
-                }
-    
             })
-            cy.log(startInd)
-            cy.log(endInd)
+           
+            
 
         })
-        
-        
-
-
 
 
         
+  //Asserion
+  cy.get('.react-date-picker__inputGroup__input').each(($element,index) => {
 
-        
-        // // cy.contains('abbr',dateNo).click()
-        // cy.get('abbr[aria-label*='+dateNo+' '+year+']').click()
-        
-        // cy.get('.react-calendar__month-view__days > :nth-child(9)')
+    cy.wrap($element).invoke('val').should('eq',expectedList[index])
+
+  })
 
 
 
