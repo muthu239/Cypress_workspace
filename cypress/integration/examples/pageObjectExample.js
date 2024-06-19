@@ -1,5 +1,6 @@
 import HomePage from "../pageObjects/homePage";
 import productPage from "../pageObjects/productPage";
+import checkoutPage from "../pageObjects/checkOutPage";
 
 /// <reference types= "Cypress"/>   // to get auto suggestions of methods
 
@@ -17,10 +18,16 @@ describe('Using the objects created in Page object Model', function()
 
     it('Page Object Model', function(){
 
+        Cypress.config('defaultCommandTimeout',8000)    //this timeout will be applicable only in this it{} block
+
         const HomePageobj = new HomePage()
         const productPageObj = new productPage()
+        const checkoutObj = new checkoutPage()
 
-        cy.visit("https://rahulshettyacademy.com/angularpractice/")
+        //to call an environment variable from cypress.config.js
+        //Cypress.env('url')
+
+        cy.visit(Cypress.env('url')+'/angularpractice/')
 
         HomePageobj.getEditBox().type(this.data.name)
         HomePageobj.getGender().select(this.data.gender)
@@ -50,6 +57,39 @@ describe('Using the objects created in Page object Model', function()
 //Click on checkout button
    productPageObj.getCheckout().click()
 
+   var sum  = 0
+
+cy.get('tr td:nth-child(4) strong').each((element,index,list) =>{
+
+    cy.log(element.text())
+    var no = element.text().split(" ")
+    var num = Number(no[1].trim())
+    sum = Number(sum)+Number(num)
+}).then(function(){     //we have resolve promise here, since JS is asynchronous, it'll print cy.log(sum) before the loop execution is completed
+    cy.log(sum)         // to resolve that we need to resolve the promise and ask JS to execute cy.log(sum) only after loop execution
+})
+ 
+cy.get('h3 strong').then(function(element){
+var strRes = element.text().split(" ")
+var res = strRes[1].trim()
+expect(Number(res)).to.equal(sum)
+
+})
+
+   checkoutObj.getcheckoutButton().click()
+
+   
+   cy.get('#country').type('India')
+
+   cy.get('.suggestions > ul > li > a').click()
+
+//    cy.get('.checkbox').click()
+   cy.get('#checkbox2').click({force:true}) //force clicking invisble element
+   cy.get('input[type="submit"]').click()
+
+   //    cy.get('.alert').should('have.text',"Success! Thank you! Your order will be delivered in next few weeks :-).")
+
+   cy.get('.alert').should('include.text',"Success! Thank you! Your order will be delivered in next few weeks :-).")
 
 })
 
